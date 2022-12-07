@@ -8,7 +8,7 @@ public class ProdutoControle {
     
     @GetMapping("/")
     public String rota(){
-        return "API de produtos funcionando";
+        return "API de produtos funcionando!";
     } 
 
 }
