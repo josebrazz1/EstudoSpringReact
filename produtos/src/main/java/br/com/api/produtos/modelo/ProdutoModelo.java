@@ -10,12 +10,12 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "produtos")
+@Getter
+@Setter
 public class ProdutoModelo {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
-    @Setter
     private Long codigo;
     private String nome;
     private String marca;
