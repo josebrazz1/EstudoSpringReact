@@ -46,14 +46,87 @@ function App() {
       }else{
         setProdutos([...produtos, retornoConvertido]);
         alert("Produto cadastrado com sucesso");
+        limparFormulario();
       }
     })
   }
 
+  //Alterar produto
+  const alterar = () => {
+    fetch("http://localhost:8080/alterar",{
+      method:"put",
+      body:JSON.stringify(objProduto),
+      headers:{
+        "Content-type":"application/json",
+        "Accept":"application/json"
+      }
+    })
+    .then(retorno => retorno.json())
+    .then(retornoConvertido => {
+
+      if(retornoConvertido.mensagem !== undefined){
+        alert(retornoConvertido.mensagem);
+      }else{
+        alert("Produto alterado com sucesso");
+
+        let vetorTemp = [...produtos];
+        
+        let indice = vetorTemp.findIndex((p) => {
+          return p.codigo === objProduto.codigo;
+        })
+        
+        vetorTemp[indice] = objProduto;
+
+        setProdutos(vetorTemp);
+
+        limparFormulario();
+      }
+    })
+  }
+
+  //Remover produto
+  const remover = () => {
+    fetch("http://localhost:8080/remover/"+objProduto.codigo,{
+      method:"delete",
+      headers:{
+        "Content-type":"application/json",
+        "Accept":"application/json"
+      }
+    })
+    .then(retorno => retorno.json())
+    .then(retornoConvertido => {
+        alert(retornoConvertido.mensagem);
+        
+        let vetorTemp = [...produtos];
+        
+        let indice = vetorTemp.findIndex((p) => {
+          return p.codigo === objProduto.codigo;
+        })
+        
+        vetorTemp.splice(indice, 1);
+
+        setProdutos(vetorTemp);
+
+        limparFormulario();
+    })
+  }
+
+  //Limpar formulário
+  const limparFormulario = () => {
+    setObjProduto(produto);
+    setBtnCadastrar(true);
+  }
+
+  //Selecionar produto
+  const selecionarProduto = (indice) => {
+    setObjProduto(produtos[indice]);
+    setBtnCadastrar(false);
+  }
+
   return (
     <div>
-      <Formulario botao={btnCadastrar} eventoTeclado={aoDigitar} cadastrar={cadastrar}/>
-      <Tabela vetor={produtos}/>
+      <Formulario botao={btnCadastrar} eventoTeclado={aoDigitar} cadastrar={cadastrar} obj={objProduto} cancelar={limparFormulario} remover={remover} alterar={alterar}/>
+      <Tabela vetor={produtos} selecionar={selecionarProduto}/>
     </div>
   );
 }
