@@ -1,3 +1,3 @@
 # EstudoSpringReact
 
-Estudo realizando Spring Boot e React.
+Estudo utilizando Spring Boot e React.
